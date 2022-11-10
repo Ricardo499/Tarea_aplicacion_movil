@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">MiLogin</string>
+    <string name="Ingrese_Datos">Bienvenidos a nuestra aplicación</string>
+    <string name="Correo_Usuario">Correo electronico</string>
+    <string name="password">Contraseña</string>
+    <string name="recordar">Recordarme mi cuenta</string>
+    <string name="recuperar_password">Olvidaste la contraseña?</string>
+    <string name="recuperacion_cuenta">Ingrese su correo junto con su contraseña nueva</string>
+
+    <string name="Registro_texto">Ingrese dato para el registro</string>
+    <string name="confirm_password">Confirmar la contraseña</string>
+    <string name="Fecha_nacimiento">Fecha de nacimiento</string>
+    <string name="Nacionalidad">Nacionalidad</string>
+
+    <string name="todo">TODO</string>
+    <string name="button">Button</string>
+    <string name="Nombre_Usuario">Nombre Usuario</string>
+    <string name="Registro">No tiene cuenta? Registrase</string>
+    <string name="iniciar_session">Iniciar Session</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="aceptar">Aceptar</string>
+
+
+</resources>
