@@ -36,7 +36,7 @@ public class Registro extends AppCompatActivity {
 
     TextView Resultado;
 
-    String endpoint = "https://rikardo30miinformacionpersonal.000webhostapp.com/Api-restfull/clases/create.php";
+    String endpoint = "https://werox99.asgardius.company/clases/create.php";
 
     private DatePickerDialog datePickerDialog;
     Button Nacimiento, Aceptar, Cancelar;

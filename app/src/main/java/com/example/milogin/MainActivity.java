@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity
     TextView Resultado;
     ImageButton nortificacion;
     Button loginBtn;
-    String endpoint = "https://rikardo30miinformacionpersonal.000webhostapp.com/Api-restfull/clases/Login.php";
+    String endpoint = "https://werox99.asgardius.company/clases/login.php";
 
     private final static String CHANNEL_ID = "NOTIFICACION";
     private final static int NOTIFICACION_ID = 0;
