@@ -13,7 +13,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import androidx.appcompat.app.AppCompatActivity;
+
+import org.json.JSONObject;
 
 import java.util.Calendar;
 
@@ -30,7 +36,7 @@ public class Registro extends AppCompatActivity {
 
     TextView Resultado;
 
-    String endpoint = "https://werox99.asgardius.company/clases/create.php";
+    String endpoint = "https://rikardo30miinformacionpersonal.000webhostapp.com/Api-restfull/clases/create.php";
 
     private DatePickerDialog datePickerDialog;
     Button Nacimiento, Aceptar, Cancelar;
@@ -42,9 +48,11 @@ public class Registro extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.registro);
+        getSupportActionBar().hide();
 
-        //prueba = (TextView) findViewById(R.id.prueba);
         initDatePicker();
+
+        Resultado = (TextView) findViewById(R.id.resultado2);
         Nacimiento = findViewById(R.id.btnNacimiento);
         Nacimiento.setText(getTodayDate());
         Aceptar = (Button) findViewById(R.id.btnAceptar);
@@ -69,21 +77,20 @@ public class Registro extends AppCompatActivity {
         Aceptar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String conuntry = nacionalidad.getSelectedItem().toString();
-                String DOB = Nacimiento.getText().toString();
-                String intetento = getTodayDate();
-                if (!Nombre_Usuario.getText().toString().equals("") && !Correo.getText().toString().equals("")
-                        && !Contraseña.getText().toString().equals("") && !Contraseña2.getText().toString().equals("")  && !conuntry.equals("")) {
-                    if (DOB.equals(intetento)){
+                String Nacionalidad = nacionalidad.getSelectedItem().toString();
+                String fecha_nacimiento = Nacimiento.getText().toString();
+                String intento = getTodayDate();
+                if (!Nombre_Usuario.getText().toString().equals("") && !Correo.getText().toString().equals("") && !Contraseña.getText().toString().equals("")
+                        && !Contraseña2.getText().toString().equals("")  && !Nacionalidad.equals("")) {
+                    if (Nacionalidad.equals(intento)){
                         Toast.makeText(Registro.this, "Selecciona una fecha valida", Toast.LENGTH_SHORT).show();
                     } else {
                         if (Contraseña.getText().toString().equals(Contraseña2.getText().toString())){
                             RegisterUser regiser = new RegisterUser();
-                            String name = Nombre_Usuario.getText().toString();
-                            String email = Correo.getText().toString();
-                            String pass1 = Contraseña.getText().toString();
-                            String pass2 = Contraseña2.getText().toString();
-                            regiser.execute(name, DOB, email, pass1, pass2, conuntry);
+                            String nombre_usuario = Nombre_Usuario.getText().toString();
+                            String correo = Correo.getText().toString();
+                            String password = Contraseña.getText().toString();
+                            regiser.execute(nombre_usuario, password, correo, fecha_nacimiento, Nacionalidad);
                         } else{
                             Toast.makeText(Registro.this, "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show();
                         }
@@ -95,67 +102,75 @@ public class Registro extends AppCompatActivity {
             }
         });
     }
+
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     public class RegisterUser extends AsyncTask<String, String, String> {
         @Override
         protected String doInBackground(String... strings) {
-            String Name = strings[0];
-            String DOB = strings[1];
-            String email = strings[2];
-            String pass = strings[3];
-            String cuntry = strings[4];
-            Boolean isAdmin = false;
-            String postBody = "{\n" +
-                    "\"nombre_usuario\" : \""+Name+"\",\n" +
-                    "\"fecha\" : \""+DOB+"\",\n" +
-                    "\"correo\" : \""+email+"\",\n" +
-                    "\"contraseña\" : \""+pass+"\",\n" +
-                    "\"nacionalidad\" : \""+cuntry+"\",\n" +
-                    "\"isAdmin\" : \""+isAdmin+"\"\n"+"}";
-            System.out.println(postBody);
+            String nombre_usuario = strings[0];
+            String password = strings[1];
+            String correo = strings[2];
+            String fecha_nacimiento = strings[3];
+            String Nacionalidad = strings[4];
 
-            RequestBody body = RequestBody.create(JSON, postBody);
 
-            OkHttpClient client = new OkHttpClient();
+                String postBody = "{\n" +
+                        "\"Nombre_Usuario\" : \"" + nombre_usuario + "\",\n" +
+                        "\"password\" : \"" + password + "\",\n" +
+                        "\"Correo\" : \"" + correo + "\",\n" +
+                        "\"Fecha_Nacimiento\" : \"" + fecha_nacimiento + "\",\n" +
+                        "\"Nacionalidad\" : \"" + Nacionalidad + "\",\n" + "}";
 
-            Request request = new Request.Builder()
-                    .addHeader("Content-Type", "application/json; charset=utf8")
-                    .url(endpoint)
-                    .post(body)
-                    .build();
+                System.out.println(postBody);
 
-            Response response = null;
-            String result = " ";
-            try {
-                response = client.newCall(request).execute();
-                System.out.println(response);
+                RequestBody body = RequestBody.create(JSON, postBody);
 
-                if (response.isSuccessful()) {
-                    result = response.body().string();
-                    String finalResult = result;
-                    System.out.println(finalResult);
-                    Registro.this.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            System.out.println(finalResult);
-                            if (finalResult.equals("true")){
-                                Toast.makeText(Registro.this, "Usuario registrado correctamente", Toast.LENGTH_SHORT).show();
-                                Aceptar.setText("+");
-                                Intent i = new Intent(Registro.this, MainActivity.class);
-                                startActivity(i);
-                            }else{
-                                Aceptar.setText("-");
-                                Toast.makeText(Registro.this, "Error en registrar el usuario", Toast.LENGTH_SHORT).show();
+                OkHttpClient client = new OkHttpClient();
+
+                Request request = new Request.Builder()
+                        .addHeader("Content-Type", "application/json; charset=utf8")
+                        .url(endpoint)
+                        .post(body)
+                        .build();
+
+                Response response = null;
+                String result = " ";
+                try {
+
+                    response = client.newCall(request).execute();
+                    System.out.println(response);
+
+                    if (response.isSuccessful()) {
+                        result = response.body().string();
+                        String finalResult = result;
+                        System.out.println(finalResult);
+                        Registro.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                System.out.println(finalResult);
+                                if (finalResult.equals("true")) {
+                                    Toast.makeText(Registro.this, "Usuario registrado correctamente", Toast.LENGTH_SHORT).show();
+                                    Resultado.setText("+");
+                                    Intent i = new Intent(Registro.this, MainActivity.class);
+                                    startActivity(i);
+                                } else {
+                                    Resultado.setText("-");
+                                    Toast.makeText(Registro.this, "Error en registrar el usuario", Toast.LENGTH_SHORT).show();
+                                }
                             }
-                        }
-                    });
+                        });
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return result;
+                return result;
+
+
         }
+
     }
+
     private String getTodayDate() {
         Calendar cal = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);
@@ -189,10 +204,12 @@ public class Registro extends AppCompatActivity {
 
     }
     private String makeDateString(int day, int month, int year) {
-        return getMonthformat(month) + "/" + day + "/" + year;
+        //return getMonthformat(month) + "-" + day + "-" + year;
+        return year + "-" + getMonthformat(month) + "-" + day;
     }
+
     private String getMonthformat(int month) {
-        String monthString;
+       String monthString;
         switch (month){
             case 1:
                 monthString= "ENE";

@@ -8,6 +8,7 @@ import android.app.NotificationManager;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.AudioAttributes;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -52,7 +53,7 @@ public class MainActivity extends AppCompatActivity
     TextView Resultado;
     ImageButton nortificacion;
     Button loginBtn;
-    String endpoint = "https://werox99.asgardius.company/clases/login.php";
+    String endpoint = "https://rikardo30miinformacionpersonal.000webhostapp.com/Api-restfull/clases/Login.php";
 
     private final static String CHANNEL_ID = "NOTIFICACION";
     private final static int NOTIFICACION_ID = 0;
@@ -73,20 +74,7 @@ public class MainActivity extends AppCompatActivity
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*
-                if (!Correo.getText().toString().equals("") && !Contraseña.getText().toString().equals(""))
-                {
-                    //String endpoint = "http://localhost/api/login";
-                    String endpoint = "https://werox99.asgardius.company/clases/login.php";
-                    String[] credenciales = {Correo.getText().toString().trim(), Contraseña.getText().toString().trim(), endpoint};
-                    API api = new API();
-                    api.execute(credenciales);
-                }
-                else
-                {
-                    Toast.makeText(MainActivity.this, "Debes proporcionar un usuario y una contraseña", Toast.LENGTH_SHORT).show();
-                }
-*/
+
                 if (!Correo.getText().toString().equals("") && !Contraseña.getText().toString().equals("")) {
                     String Email = Correo.getText().toString();
                     String password = Contraseña.getText().toString();
@@ -182,7 +170,7 @@ public class MainActivity extends AppCompatActivity
         protected String doInBackground(String... strings) {
             String Correo = strings[0];
             String Contraseña = strings[1];
-            String postBody = "{\n   \"Correo\" : \""+Correo+"\",\n   \"Contraseña\" : \""+Contraseña+"\"\n}";
+            String postBody = "{\n   \"Correo\" : \""+Correo+"\",\n   \"password\" : \""+Contraseña+"\"\n}";
 
             RequestBody body = RequestBody.create(JSON, postBody);
 
@@ -227,9 +215,6 @@ public class MainActivity extends AppCompatActivity
         initDatePicker();
         dateButton = findViewById(R.id.datePickerButton);
         dateButton.setText(getTodaysDate());*/
-
-
-
 
     }
 /*
@@ -327,13 +312,18 @@ public class MainActivity extends AppCompatActivity
         datePickerDialog.show();
     }
 */
-//Nortificacion
 
+//Nortificacion
 private void Canal_Nortificacion(){
     if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
         CharSequence name = "Noticacion";
+        Uri sonido_nortifiacion = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://"+ getApplicationContext().getPackageName() + "/" + R.raw.nortificacion_robot);
+        AudioAttributes audio =new AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                .build();
         NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, name, NotificationManager.IMPORTANCE_DEFAULT);
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notificationChannel.setSound(sonido_nortifiacion, audio);
         notificationManager.createNotificationChannel(notificationChannel);
     }
 }
@@ -342,22 +332,15 @@ private void Nortifiacion(){
 
     Uri sonido_nortifiacion = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://"+ getApplicationContext().getPackageName() + "/" + R.raw.nortificacion_robot);
     NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID);
-
     builder.setSmallIcon(R.drawable.robot);
     builder.setContentTitle("Bienvenidos a nuestra aplicacion");
     builder.setContentText("Puede explorar todo el contenido de nuestra aplicación");
     builder.setColor(Color.BLACK);
-    //builder.setPriority(NotificationCompat.PRIORITY_DEFAULT);
     builder.setLights(Color.MAGENTA, 1000, 1000);
     builder.setVibrate(new long[]{1000,1000,1000,1000,1000});
-
     builder.setSound(sonido_nortifiacion);
-    //builder.setSound(Uri.parse("android.resource://"+ getContext().getPackageName() + "/" + R.raw.nortificacion_robot));
-    //builder.setDefaults(Notification.DEFAULT_SOUND);
-
     NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(getApplicationContext());
     notificationManagerCompat.notify(NOTIFICACION_ID, builder.build());
-
 }
 
 

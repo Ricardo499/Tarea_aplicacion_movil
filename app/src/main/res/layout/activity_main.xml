@@ -22,7 +22,7 @@
         android:textStyle="bold" />
 
     <EditText
-        android:id="@id/Correo"
+        android:id="@+id/Correo"
         android:layout_width="289dp"
         android:layout_height="48dp"
         android:layout_marginStart="50dp"
@@ -115,7 +115,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="180dp"
         android:gravity="center"
-        android:layout_marginTop="660dp"
+        android:layout_marginTop="530dp"
         android:minHeight="48dp"
         android:text=""
         android:textColor="@color/black"
