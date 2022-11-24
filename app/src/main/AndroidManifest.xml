@@ -18,6 +18,9 @@
             android:name=".Login"
             android:exported="true" />
         <activity
+            android:name=".nortificacion"
+            android:exported="true" />
+        <activity
             android:name=".Registro"
             android:exported="true" />
         <activity

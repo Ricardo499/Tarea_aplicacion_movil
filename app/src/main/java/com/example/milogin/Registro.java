@@ -30,14 +30,14 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class Registro extends AppCompatActivity {
-    EditText Nombre_Usuario;
-    EditText Correo;
+    //EditText Nombre_Usuario;
+    EditText Id, Nombre, Apellido, Correo;
     EditText Contraseña, Contraseña2;
 
     TextView Resultado;
 
-    String endpoint = "https://werox99.asgardius.company/clases/create.php";
-
+    //String endpoint = "https://werox99.asgardius.company/clases/create.php";
+    String endpoint = "https://desktop.asgardius.company/test/restful/items/create.php";
     private DatePickerDialog datePickerDialog;
     Button Nacimiento, Aceptar, Cancelar;
     //TextView txtVolver, prueba;
@@ -57,7 +57,10 @@ public class Registro extends AppCompatActivity {
         Nacimiento.setText(getTodayDate());
         Aceptar = (Button) findViewById(R.id.btnAceptar);
         Cancelar = (Button) findViewById(R.id.btnCancelar);
-        Nombre_Usuario = (EditText) findViewById(R.id.nombre_usuario);
+        Id =(EditText) findViewById(R.id.id);
+        Nombre = (EditText) findViewById(R.id.nombre);
+        Apellido =(EditText) findViewById(R.id.apellido);
+        //Nombre_Usuario = (EditText) findViewById(R.id.nombre_usuario);
         Contraseña = (EditText) findViewById(R.id.contraseña);
         Contraseña2= (EditText) findViewById(R.id.contraseña2);
         Correo = (EditText) findViewById(R.id.Correo);
@@ -77,6 +80,7 @@ public class Registro extends AppCompatActivity {
         Aceptar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                /*
                 String Nacionalidad = nacionalidad.getSelectedItem().toString();
                 String fecha_nacimiento = Nacimiento.getText().toString();
                 String intento = getTodayDate();
@@ -99,6 +103,31 @@ public class Registro extends AppCompatActivity {
                     Toast.makeText(Registro.this, "Esta faltando un elemento :c", Toast.LENGTH_SHORT).show();
                 }
 
+            }*/
+                String conuntry = nacionalidad.getSelectedItem().toString();
+                String DOB = Nacimiento.getText().toString();
+                String intetento = getTodayDate();
+                if (!Id.getText().toString().equals("") && !Nombre.getText().toString().equals("") && !Apellido.getText().toString().equals("") && !Correo.getText().toString().equals("")
+                        && !Contraseña2.getText().toString().equals("") && !Contraseña.getText().toString().equals("") && !conuntry.equals("")) {
+                    if (DOB.equals(intetento)){
+                        Toast.makeText(Registro.this, "Selecciona una fecha valida", Toast.LENGTH_SHORT).show();
+                    } else {
+                        if (Contraseña.getText().toString().equals(Contraseña2.getText().toString())){
+                            RegisterUser registro = new RegisterUser();
+                            String id_user= Id.getText().toString();
+                            String name = Nombre.getText().toString();
+                            String lastname = Apellido.getText().toString();
+                            String email = Correo.getText().toString();
+                            String pass1 = Contraseña.getText().toString();
+                            registro.execute(id_user, name, lastname, email, pass1, DOB,conuntry);
+                        } else{
+                            Toast.makeText(Registro.this, "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                } else {
+                    Toast.makeText(Registro.this, "Esta faltando un elemento :c", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
     }
@@ -107,7 +136,7 @@ public class Registro extends AppCompatActivity {
     public class RegisterUser extends AsyncTask<String, String, String> {
         @Override
         protected String doInBackground(String... strings) {
-            String nombre_usuario = strings[0];
+           /* String nombre_usuario = strings[0];
             String password = strings[1];
             String correo = strings[2];
             String fecha_nacimiento = strings[3];
@@ -120,7 +149,26 @@ public class Registro extends AppCompatActivity {
                         "\"Correo\" : \"" + correo + "\",\n" +
                         "\"Fecha_Nacimiento\" : \"" + fecha_nacimiento + "\",\n" +
                         "\"Nacionalidad\" : \"" + Nacionalidad + "\",\n" + "}";
+*/
+            String Id= strings[0];
+            String Name = strings[1];
+            String LastName = strings[2];
+            String email = strings[3];
+            String pass = strings[4];
+            String cuntry = strings[5];
+            String DOB = strings[6];
+           // Boolean isAdmin = false;
+            String postBody = "{\n" +
+                    "\"id\" : \""+Id+"\",\n" +
+                    "\"firstname\" : \""+Name+"\",\n" +
+                    "\"lastname\" : \""+LastName+"\",\n" +
+                    "\"email\" : \""+email+"\",\n" +
+                    "\"password\" : \""+pass+"\",\n" +
+                    "\"country\" : \""+cuntry+"\",\n" +
+                    "\"bithdate\" : \""+DOB+"\",\n" +
 
+                    "}";
+           // "\"isAdmin\" : \""+isAdmin+"\"\n"+
                 System.out.println(postBody);
 
                 RequestBody body = RequestBody.create(JSON, postBody);
@@ -140,7 +188,7 @@ public class Registro extends AppCompatActivity {
                     response = client.newCall(request).execute();
                     System.out.println(response);
 
-                    if (response.isSuccessful()) {
+                    if (response.code() == 201) {
                         result = response.body().string();
                         String finalResult = result;
                         System.out.println(finalResult);

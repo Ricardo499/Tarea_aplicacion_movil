@@ -14,11 +14,20 @@
 
     <string name="todo">TODO</string>
     <string name="button">Button</string>
-    <string name="Nombre_Usuario">Nombre Usuario</string>
+
+    <string name="id_usuario">Id Usuario</string>
+    <string name="nombre">Nombre</string>
+    <string name="apellido">Apellido</string>
     <string name="Registro">No tiene cuenta? Registrase</string>
     <string name="iniciar_session">Iniciar Session</string>
     <string name="cancelar">Cancelar</string>
     <string name="aceptar">Aceptar</string>
+
+    <string name="nortificacion">Nortificacion</string>
+    <string name="mapa">Ubicacion</string>
+    <string name="cerrar_session">Cerrar session</string>
+
+    <string name="texto_nortificacion">Selecciona la imagen para enviar la nortificación de bienvenida</string>
 
 
 </resources>

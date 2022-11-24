@@ -10,7 +10,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class Login extends AppCompatActivity {
-    Button Cerrar_Session;
+    Button Cerrar_Session, Nortificacion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,5 +26,14 @@ public class Login extends AppCompatActivity {
                 startActivity(i);
             }
         });
+        Nortificacion =(Button) findViewById(R.id.nortificacion);
+        Nortificacion.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(Login.this, nortificacion.class);
+                startActivity(i);
+            }
+        });
+
     }
 }

@@ -53,7 +53,8 @@ public class MainActivity extends AppCompatActivity
     TextView Resultado;
     ImageButton nortificacion;
     Button loginBtn;
-    String endpoint = "https://werox99.asgardius.company/clases/login.php";
+    //String endpoint = "https://werox99.asgardius.company/clases/login.php";
+    String endpoint ="https://desktop.asgardius.company/test/restful/items/check.php";
 
     private final static String CHANNEL_ID = "NOTIFICACION";
     private final static int NOTIFICACION_ID = 0;
@@ -168,10 +169,12 @@ public class MainActivity extends AppCompatActivity
     public class LoginUser extends AsyncTask<String, String, String> {
         @Override
         protected String doInBackground(String... strings) {
-            String Correo = strings[0];
+           /* String Correo = strings[0];
             String Contraseña = strings[1];
-            String postBody = "{\n   \"Correo\" : \""+Correo+"\",\n   \"password\" : \""+Contraseña+"\"\n}";
-
+            String postBody = "{\n   \"Correo\" : \""+Correo+"\",\n   \"password\" : \""+Contraseña+"\"\n}";*/
+            String Correo = strings[0];
+            String Password = strings[1];
+            String postBody = "{\n   \"id\" : \""+Correo+"\",\n   \"password\" : \""+Password+"\"\n}";
             RequestBody body = RequestBody.create(JSON, postBody);
 
             OkHttpClient client = new OkHttpClient();
@@ -188,14 +191,14 @@ public class MainActivity extends AppCompatActivity
             try {
                 response = client.newCall(request).execute();
 
-                if (response.isSuccessful()) {
+                if (response.code() == 201) {
                     result = response.body().string();
                     String finalResult = result;
                     MainActivity.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             System.out.println(finalResult);
-                            if (finalResult.equals("true")){
+                            if (finalResult.equals("{\"message\":\"Password is correct.\"}")){
                                 Resultado.setText("Se ingreso Correctamente");
                                 Toast.makeText(MainActivity.this, "Log in Exitoso", Toast.LENGTH_SHORT).show();
 
